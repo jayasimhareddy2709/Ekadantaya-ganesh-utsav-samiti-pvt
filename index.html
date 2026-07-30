@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -67,7 +67,7 @@
                     <div class="bg-blue-50 rounded-xl p-4 border border-blue-100 relative overflow-hidden">
                         <span class="text-xs font-semibold text-blue-600 block uppercase tracking-wider">Cash In Hand</span>
                         <span id="cashInHandDisplay" class="text-2xl font-bold text-blue-700 mt-1 block">₹0</span>
-                        <i class="fa-solid fa-vault absolute right-3 bottom-3 text-blue-200 text-2xl"></i>
+                        <i class="fa-solid fa-vault absolute right-3 bottom-3 text-red-200 text-2xl"></i>
                     </div>
                 </div>
 
@@ -233,61 +233,62 @@
     </main>
 
     <script>
-        // Data Store
-        let collections = [];
-        let expenses = [];
+        // Data arrays initialized with the default template data directly
+        let collections = [
+            { name: "Shop Corner Banner Sponsor", amount: 2500 },
+            { name: "House No. 12", amount: 1000 },
+            { name: "House No. 45", amount: 500 }
+        ];
+        
+        let expenses = [
+            { category: "Flex & Banners", detail: "Advance for Entrance Flex", amount: 1000 },
+            { category: "Lighting & Ambience", detail: "Pixel Light Series Purchase", amount: 3000 }
+        ];
+        
         const TARGET_GOAL = 60000;
 
-        // Elements
-        const collTableBody = document.getElementById('collectionTableBody');
-        const expTableBody = document.getElementById('expenseTableBody');
-        const emptyCollMsg = document.getElementById('emptyCollectionMessage');
-        const emptyExpMsg = document.getElementById('emptyExpenseMessage');
-        
-        const totalCollDisp = document.getElementById('totalCollectedDisplay');
-        const totalSpentDisp = document.getElementById('totalSpentDisplay');
-        const cashInHandDisp = document.getElementById('cashInHandDisplay');
-        
-        const progressBar = document.getElementById('progressBar');
-        const progressPctText = document.getElementById('progressBarPercentage');
-        const remainingGapText = document.getElementById('remainingGapText');
-
         function updateMetrics() {
-            const totalCollected = collections.reduce((sum, item) => sum + item.amount, 0);
-            const totalSpent = expenses.reduce((sum, item) => sum + item.amount, 0);
-            const cashInHand = totalCollected - totalSpent;
+            let totalCollected = 0;
+            for(let i=0; i<collections.length; i++) { totalCollected += collections[i].amount; }
             
-            const remainingGap = Math.max(0, TARGET_GOAL - totalCollected);
-            const percent = Math.min(100, Math.round((totalCollected / TARGET_GOAL) * 100));
+            let totalSpent = 0;
+            for(let i=0; i<expenses.length; i++) { totalSpent += expenses[i].amount; }
+            
+            let cashInHand = totalCollected - totalSpent;
+            let remainingGap = TARGET_GOAL - totalCollected;
+            if (remainingGap < 0) remainingGap = 0;
+            
+            let percent = Math.min(100, Math.round((totalCollected / TARGET_GOAL) * 100));
 
-            // Display changes
-            totalCollDisp.innerText = `₹${totalCollected.toLocaleString('en-IN')}`;
-            totalSpentDisp.innerText = `₹${totalSpent.toLocaleString('en-IN')}`;
-            cashInHandDisp.innerText = `₹${cashInHand.toLocaleString('en-IN')}`;
+            document.getElementById('totalCollectedDisplay').innerText = "₹" + totalCollected.toLocaleString('en-IN');
+            document.getElementById('totalSpentDisplay').innerText = "₹" + totalSpent.toLocaleString('en-IN');
             
-            // Adjust warning colors if overspent out of real cash in hand
+            let cashHandElem = document.getElementById('cashInHandDisplay');
+            cashHandElem.innerText = "₹" + cashInHand.toLocaleString('en-IN');
             if (cashInHand < 0) {
-                cashInHandDisp.className = "text-2xl font-bold text-red-600 mt-1 block";
+                cashHandElem.className = "text-2xl font-bold text-red-600 mt-1 block";
             } else {
-                cashInHandDisp.className = "text-2xl font-bold text-blue-700 mt-1 block";
+                cashHandElem.className = "text-2xl font-bold text-blue-700 mt-1 block";
             }
 
-            progressBar.style.width = `${percent}%`;
-            progressPctText.innerText = `${percent}% Target Reached`;
-            remainingGapText.innerText = remainingGap > 0 ? `Remaining Gap: ₹${remainingGap.toLocaleString('en-IN')}` : `🎉 Target Met!`;
+            document.getElementById('progressBar').style.width = percent + "%";
+            document.getElementById('progressBarPercentage').innerText = percent + "% Target Reached";
+            document.getElementById('remainingGapText').innerText = remainingGap > 0 ? "Remaining Gap: ₹" + remainingGap.toLocaleString('en-IN') : "🎉 Target Met!";
         }
 
         function renderCollectionTable() {
-            document.querySelectorAll('.coll-row').forEach(el => el.remove());
+            let tbody = document.getElementById('collectionTableBody');
+            tbody.innerHTML = ""; 
+            
             if (collections.length === 0) {
-                emptyCollMsg.style.display = 'table-row';
+                tbody.innerHTML = `<tr id="emptyCollectionMessage"><td colspan="3" class="text-center p-6 text-gray-400 italic">No payments logged yet.</td></tr>`;
                 return;
             }
-            emptyCollMsg.style.display = 'none';
 
-            collections.forEach((item, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'coll-row hover:bg-gray-50 transition';
+            for(let index=0; index<collections.length; index++) {
+                let item = collections[index];
+                let tr = document.createElement('tr');
+                tr.className = 'coll-row hover:bg-gray-50 transition border-b border-gray-50';
                 tr.innerHTML = `
                     <td class="p-3 font-medium text-gray-700">${item.name}</td>
                     <td class="p-3 font-semibold text-emerald-600">₹${item.amount.toLocaleString('en-IN')}</td>
@@ -295,21 +296,23 @@
                         <button onclick="removeCollection(${index})" class="text-red-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
-                collTableBody.appendChild(tr);
-            });
+                tbody.appendChild(tr);
+            }
         }
 
         function renderExpenseTable() {
-            document.querySelectorAll('.exp-row').forEach(el => el.remove());
+            let tbody = document.getElementById('expenseTableBody');
+            tbody.innerHTML = ""; 
+            
             if (expenses.length === 0) {
-                emptyExpMsg.style.display = 'table-row';
+                tbody.innerHTML = `<tr id="emptyExpenseMessage"><td colspan="4" class="text-center p-6 text-gray-400 italic">No expenses spent/logged yet. Track cash purchases here!</td></tr>`;
                 return;
             }
-            emptyExpMsg.style.display = 'none';
 
-            expenses.forEach((item, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'exp-row hover:bg-gray-50 transition';
+            for(let index=0; index<expenses.length; index++) {
+                let item = expenses[index];
+                let tr = document.createElement('tr');
+                tr.className = 'exp-row hover:bg-gray-50 transition border-b border-gray-50';
                 tr.innerHTML = `
                     <td class="p-3 font-semibold text-xs text-orange-600 uppercase tracking-tight">${item.category}</td>
                     <td class="p-3 text-gray-600">${item.detail}</td>
@@ -318,22 +321,22 @@
                         <button onclick="removeExpense(${index})" class="text-red-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
-                expTableBody.appendChild(tr);
-            });
+                tbody.appendChild(tr);
+            }
         }
 
         function addCollection() {
-            const nameInput = document.getElementById('contributorName');
-            const amtInput = document.getElementById('contributorAmount');
-            const name = nameInput.value.trim();
-            const amount = parseInt(amtInput.value);
+            let nameInput = document.getElementById('contributorName');
+            let amtInput = document.getElementById('contributorAmount');
+            let name = nameInput.value.trim();
+            let amount = parseInt(amtInput.value);
 
             if (!name || isNaN(amount) || amount <= 0) {
                 alert('Enter a proper name/house and a valid collection amount.');
                 return;
             }
 
-            collections.push({ name, amount });
+            collections.push({ name: name, amount: amount });
             nameInput.value = '';
             amtInput.value = '';
             
@@ -342,10 +345,7 @@
         }
 
         function addExpense() {
-            const catSelect = document.getElementById('expenseCategory');
-            const detailInput = document.getElementById('expenseDetail');
-            const amtInput = document.getElementById('expenseAmount');
-            
-            const category = catSelect.value;
-            const detail = detailInput.value.trim() || "General Expense";
-            const amount = parseIn                    
+            let catSelect = document.getElementById('expenseCategory');
+            let detailInput = document.get                                                const emptyExpMsg = document.getElementById('emptyExpenseMessage');
+        
+                        
