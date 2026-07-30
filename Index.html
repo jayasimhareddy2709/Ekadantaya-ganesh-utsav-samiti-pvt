@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekadantaya Ganesh Utsav Samiti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-amber-50 text-gray-800 font-sans">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-orange-600 to-amber-500 text-white text-center py-8 px-4 shadow-lg">
+        <h1 class="text-3xl md:text-5xl font-bold tracking-wide">Ekadantaya Ganesh Utsav Samiti</h1>
+        <p class="text-orange-100 mt-2 text-sm md:text-base font-medium tracking-wider">Official Utsav Management & Finance Tracker</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+        
+        <!-- Grand Donations / Special Contributions -->
+        <section class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-orange-500">
+            <h2 class="text-xl font-bold text-orange-600 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-hands-praying"></i> Pillars of the Utsav (Grand Contributions)
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-100 flex items-center gap-4">
+                    <div class="p-3 bg-orange-500 text-white rounded-lg text-xl"><i class="fa-solid fa-om"></i></div>
+                    <div><p class="text-xs text-gray-500 font-semibold uppercase">Ganesh Idol</p><p class="font-bold text-gray-800 text-lg">Generously Donated</p></div>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-xl border border-amber-100 flex items-center gap-4">
+                    <div class="p-3 bg-amber-500 text-white rounded-lg text-xl"><i class="fa-solid fa-utensils"></i></div>
+                    <div><p class="text-xs text-gray-500 font-semibold uppercase">Annadanam</p><p class="font-bold text-gray-800 text-lg">Generously Donated</p></div>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-100 flex items-center gap-4">
+                    <div class="p-3 bg-yellow-500 text-white rounded-lg text-xl"><i class="fa-solid fa-volume-high"></i></div>
+                    <div><p class="text-xs text-gray-500 font-semibold uppercase">Sound System/Speakers</p><p class="font-bold text-gray-800 text-lg">Generously Donated</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget & Summary Dashboard -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-6 rounded-2xl shadow-md">
+                <p class="text-emerald-100 text-sm font-semibold uppercase tracking-wider">Total Collections</p>
+                <h3 class="text-3xl font-black mt-1" id="total-collections">₹0</h3>
+                <p class="text-xs text-emerald-100 mt-2" id="donation-count">0 Donors contributed</p>
+            </div>
+            <div class="bg-gradient-to-br from-red-500 to-rose-600 text-white p-6 rounded-2xl shadow-md">
+                <p class="text-rose-100 text-sm font-semibold uppercase tracking-wider">Total Cash Expenses</p>
+                <h3 class="text-3xl font-black mt-1" id="total-expenses">₹0</h3>
+                <p class="text-xs text-rose-100 mt-2">Allocated Budget: ₹60,000</p>
+            </div>
+            <div class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-6 rounded-2xl shadow-md">
+                <p class="text-blue-100 text-sm font-semibold uppercase tracking-wider">Remaining Cash Balance</p>
+                <h3 class="text-3xl font-black mt-1" id="net-balance">₹0</h3>
+                <p class="text-xs text-blue-100 mt-2">Collections minus Expenses</p>
+            </div>
+        </section>
+
+        <!-- Budget Categorization Matrix -->
+        <section class="bg-white p-6 rounded-2xl shadow-md">
+            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-chart-pie text-amber-500"></i> Budget Allocation & Spending Status
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-200 text-gray-500 text-sm">
+                            <th class="pb-3 font-semibold">Category</th>
+                            <th class="pb-3 font-semibold text-right">Budget Limit</th>
+                            <th class="pb-3 font-semibold text-right">Actual Spent</th>
+                            <th class="pb-3 font-semibold text-right">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-sm" id="budget-matrix-body">
+                        <!-- Dynamically populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Logs Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Collection Log -->
+            <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-emerald-500">
+                <h2 class="text-xl font-bold text-emerald-700 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-money-bill-trend-up"></i> Collection Log (Donations)
+                </h2>
+                <div class="max-h-96 overflow-y-auto space-y-3 pr-2" id="collection-log">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Expense Log -->
+            <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-red-500">
+                <h2 class="text-xl font-bold text-red-700 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-receipt"></i> Cash Expenditure Log
+                </h2>
+                <div class="max-h-96 overflow-y-auto space-y-3 pr-2" id="expense-log">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="text-center py-8 text-gray-400 text-xs">
+        © 2026 Ekadantaya Ganesh Utsav Samiti. All transparency logs are public.
+    </footer>
+
+    <!-- DATA & LOGIC CONTROL SCRIPT -->
+    <script>
+        // ==========================================
+        //  ⚠️ CHANGE/ADD YOUR DATA HERE ⚠️
+        // ==========================================
+        const donations = [
+            // Example format: { name: "Ramesh Kumar", amount: 501 },
+            // Add your live donations below this line:
+
+        ];
+
+        const budgetLimits = {
+            "Mandapam": 15000,
+            "Pooja": 20000,
+            "Lighting": 5000,
+            "Cracker": 5000,
+            "Diesel & Visarjan": 5000,
+            "Gifts": 4000,
+            "Flex": 2000
+        };
+
+        const expenses = [
+            // Example format: { category: "Mandapam", amount: 5000, details: "Advance payment for tent" },
+            // Add your live expenses below this line:
+
+        ];
+
+        // ==========================================
+        //  ENGINE CODE (Do not modify below this line)
+        // ==========================================
+        function initDashboard() {
+            let totalColl = donations.reduce((sum, d) => sum + d.amount, 0);
+            let totalExp = expenses.reduce((sum, e) => sum + e.amount, 0);
+            
+            document.getElementById('total-collections').innerText = `₹${totalColl.toLocaleString('en-IN')}`;
+            document.getElementById('donation-count').innerText = `${donations.length} Contributions received`;
+            document.getElementById('total-expenses').innerText = `₹${totalExp.toLocaleString('en-IN')}`;
+            
+            const netBalance = totalColl - totalExp;
+            const balanceEl = document.getElementById('net-balance');
+            balanceEl.innerText = `₹${netBalance.toLocaleString('en-IN')}`;
+            if(netBalance < 0) {
+                balanceEl.parentElement.className = "bg-gradient-to-br from-amber-600 to-red-600 text-white p-6 rounded-2xl shadow-md";
+            }
+
+            // Calculate per category spending
+            const categorySpent = {};
+            Object.keys(budgetLimits).forEach(cat => categorySpent[cat] = 0);
+            expenses.forEach(e => {
+                if(categorySpent[e.category] !== undefined) categorySpent[e.category] += e.amount;
+            });
+
+            // Render Budget Table
+            const matrixBody = document.getElementById('budget-matrix-body');
+            matrixBody.innerHTML = '';
+            Object.keys(budgetLimits).forEach(cat => {
+                const limit = budgetLimits[cat];
+                const spent = categorySpent[cat];
+                const pct = (spent / limit) * 100;
+                let statusBadge = `<span class="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-600 font-medium">Safe</span>`;
+                if(spent > limit) statusBadge = `<span class="px-2 py-0.5 rounded text-xs bg-red-100 text-red-600 font-bold">Over Budget</span>`;
+                else if (spent === limit && limit > 0) statusBadge = `<span class="px-2 py-0.5 rounded text-xs bg-amber-100 text-amber-700 font-medium">Maxed</span>`;
+                else if (spent > 0) statusBadge = `<span class="px-2 py-0.5 rounded text-xs bg-emerald-100 text-emerald-700 font-medium">Active</span>`;
+
+                matrixBody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 font-medium text-gray-700">${cat}</td>
+                        <td class="py-3 text-right text-gray-500 font-mono">₹${limit.toLocaleString('en-IN')}</td>
+                        <td class="py-3 text-right font-semibold text-gray-800 font-mono">₹${spent.toLocaleString('en-IN')}</td>
+                        <td class="py-3 text-right">${statusBadge}</td>
+                    </tr>
+                `;
+            });
+
+            // Render Collections
+            const collLog = document.getElementById('collection-log');
+            collLog.innerHTML = donations.length === 0 ? '<p class="text-sm text-gray-400 italic text-center py-4">No collections recorded yet.</p>' : '';
+            [...donations].reverse().forEach(d => {
+                collLog.innerHTML += `
+                    <div class="flex justify-between items-center p-3 bg-emerald-50 border border-emerald-100 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs">${d.name.charAt(0)}</div>
+                            <span class="font-medium text-gray-700 text-sm">${d.name}</span>
+                        </div>
+                        <span class="font-bold text-emerald-700 font-mono text-sm">+ ₹${d.amount}</span>
+                    </div>
+                `;
+            });
+
+            // Render Expenses
+            const expLog = document.getElementById('expense-log');
+            expLog.innerHTML = expenses.length === 0 ? '<p class="text-sm text-gray-400 italic text-center py-4">No cash expenses recorded yet.</p>' : '';
+            [...expenses].reverse().forEach(e => {
+                expLog.innerHTML += `
+                    <div class="p-3 bg-red-50 border border-red-100 rounded-xl space-y-1">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-gray-700 text-sm">${e.category}</span>
+                            <span class="font-bold text-red-600 font-mono text-sm">- ₹${e.amount}</span>
+                        </div>
+                        ${e.details ? `<p class="text-xs text-gray-500 italic">${e.details}</p>` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>
