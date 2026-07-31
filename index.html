@@ -1,4 +1,4 @@
-        <!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -164,14 +164,59 @@
 
         </div>
 
-        <!-- Right Side: Budget Breakdown Structure Reference -->
+        <!-- Right Side: Budget Breakdown & Inventory Tracking -->
         <div class="space-y-6">
+            
+            <!-- Dynamic Inventory Module (Have vs Need) -->
+            <div class="bg-white rounded-2xl p-6 shadow-md border border-orange-100">
+                <h2 class="text-lg font-bold text-gray-700 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked text-orange-500"></i> Utsav Inventory Checklist
+                </h2>
+                <p class="text-xs text-gray-400 mb-4">Track items already secured vs things still pending to buy.</p>
+                
+                <!-- Quick Add Form -->
+                <div class="bg-orange-50/50 p-3 rounded-xl border border-orange-100/70 mb-4 space-y-2">
+                    <input id="inventoryItemName" type="text" placeholder="Item name (e.g., Modak Mold, Coconuts)" class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-orange-500">
+                    <div class="flex gap-2">
+                        <select id="inventoryItemStatus" class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-xs bg-white focus:outline-none focus:border-orange-500">
+                            <option value="have">✅ We Have (Donated/Owned)</option>
+                            <option value="need">🛒 Need to Buy (Pending)</option>
+                        </select>
+                        <button onclick="addInventoryItem()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-4 py-1.5 rounded-lg transition shrink-0">Add</button>
+                    </div>
+                </div>
+
+                <!-- Lists container -->
+                <div class="space-y-4 max-h-[350px] overflow-y-auto pr-1">
+                    <!-- We Have List -->
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1 mb-2">
+                            <i class="fa-solid fa-circle-check"></i> What We Have
+                        </h3>
+                        <ul id="haveItemsList" class="space-y-1 text-xs text-gray-600 divide-y divide-gray-50">
+                            <!-- Populated dynamically -->
+                        </ul>
+                    </div>
+                    
+                    <!-- Need to Buy List -->
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-700 flex items-center gap-1 mb-2">
+                            <i class="fa-solid fa-cart-shopping"></i> Need to Buy
+                        </h3>
+                        <ul id="needItemsList" class="space-y-1 text-xs text-gray-600 divide-y divide-gray-50">
+                            <!-- Populated dynamically -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estimated Allocations Reference -->
             <div class="bg-white rounded-2xl p-6 shadow-md border border-orange-100">
                 <h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-wallet text-gray-500"></i> Estimated Allocations Reference
                 </h2>
 
-                <div class="space-y-3 max-h-[580px] overflow-y-auto pr-1">
+                <div class="space-y-3 max-h-[300px] overflow-y-auto pr-1">
                     <div class="border border-orange-50 rounded-xl p-3 bg-orange-50/40 text-xs">
                         <div class="flex justify-between items-center font-bold text-sm text-gray-700 mb-1">
                             <span>📿 Pooja & Rituals</span>
@@ -233,7 +278,7 @@
     </main>
 
     <script>
-        // Data arrays initialized with the default template data directly
+        // Data arrays initialized with default data directly
         let collections = [
             { name: "Shop Corner Banner Sponsor", amount: 2500 },
             { name: "House No. 12", amount: 1000 },
@@ -243,6 +288,15 @@
         let expenses = [
             { category: "Flex & Banners", detail: "Advance for Entrance Flex", amount: 1000 },
             { category: "Lighting & Ambience", detail: "Pixel Light Series Purchase", amount: 3000 }
+        ];
+
+        let inventory = [
+            { name: "Ganesh Idol (Grand)", status: "have" },
+            { name: "Sound System & Speakers", status: "have" },
+            { name: "Maha-Prasadam Food Catering", status: "have" },
+            { name: "Pooja Flowers & Garland Set", status: "need" },
+            { name: "Aarti Camphor & Oil", status: "need" },
+            { name: "Main Stage Backdrop Cloth", status: "need" }
         ];
         
         const TARGET_GOAL = 60000;
@@ -277,75 +331,5 @@
         }
 
         function renderCollectionTable() {
-            let tbody = document.getElementById('collectionTableBody');
-            tbody.innerHTML = ""; 
-            
-            if (collections.length === 0) {
-                tbody.innerHTML = `<tr id="emptyCollectionMessage"><td colspan="3" class="text-center p-6 text-gray-400 italic">No payments logged yet.</td></tr>`;
-                return;
-            }
-
-            for(let index=0; index<collections.length; index++) {
-                let item = collections[index];
-                let tr = document.createElement('tr');
-                tr.className = 'coll-row hover:bg-gray-50 transition border-b border-gray-50';
-                tr.innerHTML = `
-                    <td class="p-3 font-medium text-gray-700">${item.name}</td>
-                    <td class="p-3 font-semibold text-emerald-600">₹${item.amount.toLocaleString('en-IN')}</td>
-                    <td class="p-3 text-right">
-                        <button onclick="removeCollection(${index})" class="text-red-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            }
-        }
-
-        function renderExpenseTable() {
-            let tbody = document.getElementById('expenseTableBody');
-            tbody.innerHTML = ""; 
-            
-            if (expenses.length === 0) {
-                tbody.innerHTML = `<tr id="emptyExpenseMessage"><td colspan="4" class="text-center p-6 text-gray-400 italic">No expenses spent/logged yet. Track cash purchases here!</td></tr>`;
-                return;
-            }
-
-            for(let index=0; index<expenses.length; index++) {
-                let item = expenses[index];
-                let tr = document.createElement('tr');
-                tr.className = 'exp-row hover:bg-gray-50 transition border-b border-gray-50';
-                tr.innerHTML = `
-                    <td class="p-3 font-semibold text-xs text-orange-600 uppercase tracking-tight">${item.category}</td>
-                    <td class="p-3 text-gray-600">${item.detail}</td>
-                    <td class="p-3 font-semibold text-red-600">₹${item.amount.toLocaleString('en-IN')}</td>
-                    <td class="p-3 text-right">
-                        <button onclick="removeExpense(${index})" class="text-red-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            }
-        }
-
-        function addCollection() {
-            let nameInput = document.getElementById('contributorName');
-            let amtInput = document.getElementById('contributorAmount');
-            let name = nameInput.value.trim();
-            let amount = parseInt(amtInput.value);
-
-            if (!name || isNaN(amount) || amount <= 0) {
-                alert('Enter a proper name/house and a valid collection amount.');
-                return;
-            }
-
-            collections.push({ name: name, amount: amount });
-            nameInput.value = '';
-            amtInput.value = '';
-            
-            renderCollectionTable();
-            updateMetrics();
-        }
-
-        function addExpense() {
-            let catSelect = document.getElementById('expenseCategory');
-            let detailInput = document.get                                                const emptyExpMsg = document.getElementById('emptyExpenseMessage');
+            let tbody = document.getElementById('collectionTabl                                                          { category: "Lighting & Ambience", detail: "Pixel Light Series Purchase", amount: 3000 }
         
-                        
