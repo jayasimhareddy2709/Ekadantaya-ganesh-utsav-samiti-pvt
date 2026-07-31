@@ -333,6 +333,8 @@
             let nameInput = document.getElementById('contributorName');
             let amtInput = document.getElementById('contributorAmount');
             let name = nameInput.value.trim();
+          let amount = parseInt(amtInput.value);
+                
             if (!name || isNaN(amount) || amount <= 0) {
                 alert('Enter a proper name/house and a valid collection amount.');
                 return;
