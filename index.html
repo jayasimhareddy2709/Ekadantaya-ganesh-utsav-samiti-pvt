@@ -333,6 +333,60 @@
             let nameInput = document.getElementById('contributorName');
             let amtInput = document.getElementById('contributorAmount');
             let name = nameInput.value.trim();
-            let amount = parseIn
-                                                        if (collections.length === 0) {
-                
+            if (!name || isNaN(amount) || amount <= 0) {
+                alert('Enter a proper name/house and a valid collection amount.');
+                return;
+            }
+
+            collections.push({ name: name, amount: amount });
+            nameInput.value = '';
+            amtInput.value = '';
+            
+            renderCollectionTable();
+            updateMetrics();
+        }
+
+        function addExpense() {
+            let catSelect = document.getElementById('expenseCategory');
+            let detailInput = document.getElementById('expenseDetail');
+            let amtInput = document.getElementById('expenseAmount');
+            
+            let category = catSelect.value;
+            let detail = detailInput.value.trim() || "General Expense";
+            let amount = parseInt(amtInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please input a valid cost amount spent.');
+                return;
+            }
+
+            expenses.push({ category: category, detail: detail, amount: amount, billUrl: "" });
+            detailInput.value = '';
+            amtInput.value = '';
+
+            renderExpenseTable();
+            updateMetrics();
+        }
+
+        function removeCollection(index) {
+            collections.splice(index, 1);
+            renderCollectionTable();
+            updateMetrics();
+        }
+
+        function removeExpense(index) {
+            expenses.splice(index, 1);
+            renderExpenseTable();
+            updateMetrics();
+        }
+
+        // Auto-run safely when DOM finishes mounting
+        window.addEventListener('DOMContentLoaded', function() {
+            renderCollectionTable();
+            renderExpenseTable();
+            updateMetrics();
+        });
+    </script>
+</body>
+</html>
+                                    
