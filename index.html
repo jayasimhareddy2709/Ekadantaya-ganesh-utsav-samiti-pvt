@@ -240,7 +240,7 @@
             { name: "House No. 45", amount: 500 }
         ];
         
-        // Setup initial default logs with a dynamic bill link for the flex row
+        // Setup initial default logs with billUrl string explicitly tracked
         let expenses = [
             { category: "Mandapam Decoration", detail: "6k for mandap cloth", amount: 6000, billUrl: "" },
             { category: "Flex & Banners", detail: "1k for flex 📄 (Tap to view bill)", amount: 1000, billUrl: "flex-bill.png" }
@@ -282,7 +282,7 @@
             tbody.innerHTML = ""; 
             
             if (collections.length === 0) {
-                tbody.innerHTML = `<tr id="emptyCollectionMessage"><td colspan="3" class="text-center p-6 text-gray-400 italic">No payments logged yet.</td></tr>`;
+                tbody.innerHTML = '<tr id="emptyCollectionMessage"><td colspan="3" class="text-center p-6 text-gray-400 italic">No payments logged yet.</td></tr>';
                 return;
             }
 
@@ -290,13 +290,11 @@
                 let item = collections[index];
                 let tr = document.createElement('tr');
                 tr.className = 'coll-row hover:bg-gray-50 transition border-b border-gray-50';
-                tr.innerHTML = `
-                    <td class="p-3 font-medium text-gray-700">${item.name}</td>
-                    <td class="p-3 font-semibold text-emerald-600">₹${item.amount.toLocaleString('en-IN')}</td>
-                    <td class="p-3 text-right">
-                        <button onclick="removeCollection(${index})" class="text-red-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
+                tr.innerHTML = '<td class="p-3 font-medium text-gray-700">' + item.name + '</td>' +
+                               '<td class="p-3 font-semibold text-emerald-600">₹' + item.amount.toLocaleString('en-IN') + '</td>' +
+                               '<td class="p-3 text-right">' +
+                                   '<button onclick="removeCollection(' + index + ')" class="text-red-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash"></i></button>' +
+                               '</td>';
                 tbody.appendChild(tr);
             }
         }
@@ -306,7 +304,7 @@
             tbody.innerHTML = ""; 
             
             if (expenses.length === 0) {
-                tbody.innerHTML = `<tr id="emptyExpenseMessage"><td colspan="4" class="text-center p-6 text-gray-400 italic">No expenses spent/logged yet. Track cash purchases here!</td></tr>`;
+                tbody.innerHTML = '<tr id="emptyExpenseMessage"><td colspan="4" class="text-center p-6 text-gray-400 italic">No expenses spent/logged yet. Track cash purchases here!</td></tr>';
                 return;
             }
 
@@ -314,22 +312,19 @@
                 let item = expenses[index];
                 let tr = document.createElement('tr');
                 
-                // If a bill is linked, make it look clickable and change styling slightly
                 if (item.billUrl) {
                     tr.className = 'exp-row bg-amber-50/40 hover:bg-amber-100/60 cursor-pointer transition border-b border-gray-100';
-                    tr.setAttribute('onclick', `window.open('${item.billUrl}', '_blank')`);
+                    tr.setAttribute('onclick', "window.open('" + item.billUrl + "', '_blank')");
                 } else {
                     tr.className = 'exp-row hover:bg-gray-50 transition border-b border-gray-50';
                 }
 
-                tr.innerHTML = `
-                    <td class="p-3 font-semibold text-xs text-orange-600 uppercase tracking-tight">${item.category}</td>
-                    <td class="p-3 text-gray-600">${item.detail}</td>
-                    <td class="p-3 font-semibold text-red-600">₹${item.amount.toLocaleString('en-IN')}</td>
-                    <td class="p-3 text-right" onclick="event.stopPropagation();">
-                        <button onclick="removeExpense(${index})" class="text-red-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
+                tr.innerHTML = '<td class="p-3 font-semibold text-xs text-orange-600 uppercase tracking-tight">' + item.category + '</td>' +
+                               '<td class="p-3 text-gray-600">' + item.detail + '</td>' +
+                               '<td class="p-3 font-semibold text-red-600">₹' + item.amount.toLocaleString('en-IN') + '</td>' +
+                               '<td class="p-3 text-right" onclick="event.stopPropagation();">' +
+                                   '<button onclick="removeExpense(' + index + ')" class="text-red-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash"></i></button>' +
+                               '</td>';
                 tbody.appendChild(tr);
             }
         }
@@ -338,4 +333,6 @@
             let nameInput = document.getElementById('contributorName');
             let amtInput = document.getElementById('contributorAmount');
             let name = nameInput.value.trim();
-            let amount = parseInt(amt                                                
+            let amount = parseIn
+                                                        if (collections.length === 0) {
+                
