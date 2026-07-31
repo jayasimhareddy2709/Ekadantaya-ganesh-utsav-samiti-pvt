@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -347,44 +347,5 @@
 
         function addExpense() {
             let catSelect = document.getElementById('expenseCategory');
-            let detailInput = document.getElementById('expenseDetail');
-            let amtInput = document.getElementById('expenseAmount');
-            
-            let category = catSelect.value;
-            let detail = detailInput.value.trim() || "General Expense";
-            let amount = parseInt(amtInput.value);
-
-            if (isNaN(amount) || amount <= 0) {
-                alert('Please input a valid cost amount spent.');
-                return;
-            }
-
-            expenses.push({ category: category, detail: detail, amount: amount });
-            detailInput.value = '';
-            amtInput.value = '';
-
-            renderExpenseTable();
-            updateMetrics();
-        }
-
-        function removeCollection(index) {
-            collections.splice(index, 1);
-            renderCollectionTable();
-            updateMetrics();
-        }
-
-        function removeExpense(index) {
-            expenses.splice(index, 1);
-            renderExpenseTable();
-            updateMetrics();
-        }
-
-        // Auto-run immediately when elements exist
-        renderCollectionTable();
-        renderExpenseTable();
-        updateMetrics();
-    </script>
-</body>
-</html>
-              
+                                                 { 
             
